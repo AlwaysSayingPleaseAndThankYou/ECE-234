@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>swapU32.s - Swap two U32 values referenced by a pointer &mdash; Microcontrollers: From Assembly Language to C Using the PIC24 family, second edition 6-May-2015 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/CodeChat.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '6-May-2015',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Microcontrollers: From Assembly Language to C Using the PIC24 family, second edition 6-May-2015 documentation" href="../contents.html" />
+    <link rel="up" title="Textbook examples" href="../textbook_examples.html" />
+    <link rel="next" title="upcase.s - Change a string to uppercase" href="upcase.html" />
+    <link rel="prev" title="psv_upcase_24E33E.s - Initialize string from program memory (PIC24E/dsPIC33E)" href="psv_upcase_24E33E.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="swapu32-s-swap-two-u32-values-referenced-by-a-pointer">
+<h1>swapU32.s - Swap two U32 values referenced by a pointer<a class="headerlink" href="#swapu32-s-swap-two-u32-values-referenced-by-a-pointer" title="Permalink to this headline">¶</a></h1>
+<div class="code highlight-nasm"><div class="highlight"><pre> 
+.include &quot;xc.inc&quot;
+
+.global __reset          ;The label for the first line of code.
+
+
+     .bss           ;unitialized data section
+
+au32_x:    .space   4*4  ; four element u32 array
+
+.text                             ;Start of Code section
+__reset:                          ; first instruction located at __reset label
+       mov #__SP_init, W15       ;Initalize the Stack Pointer
+       mov #__SPLIM_init, W0
+       mov W0, SPLIM             ;Initialize the stack limit register
+       rcall init_a
+       goto main
+ ;__SP_init set by linker to be after allocated data
+
+main:
+       mov #au32_x, W0
+       mov.b #1, W1
+       mov.b #3, W2
+       rcall swapU32
+
+
+done:
+    goto    done           ;infinite wait loop
+ 
+ 
+</pre></div>
+</div>
+<p>u32_baseptr passed in W0
+u8_k passed in W1
+u8_i passed in W2
+W3 used for &amp;bptr[k]
+W4 used for &amp;bptr[j]
+W5,W6 used for u32_tmp</p>
+<div class="code highlight-nasm"><div class="highlight"><pre>swapU32:
+    ze W1, W1
+    ze W2, W2
+    sl W1, #2, W1      ; k=k&lt;&lt;2=k*4
+    sl W2, #2, W2      ; j=j&lt;&lt;2=j*4
+    add W0, W1, W3     ; W3 = &amp;bptr[k]
+    add W0, W2, W4     ; W4 = &amp;bptr[j]
+
+    mov [W3++], W5     ; W5 = bptr[k].LSW
+    mov [W3--], W6     ; W6 = bptr[k].MSW
+
+    mov [W4++], [W3++] ; bptr[k].LSW = bptr[j].LSW
+    mov [W4--], [W3--] ; bptr[k].MSW = bptr[j].MSW
+
+    add W0, W2, W4     ; W4 = &amp;bptr[j]
+
+    mov W5, [W4++]     ; bptr[j].LSW = u32_tmp.LSW;
+    mov W6, [W4--]     ; bptr[j].MSW = u32_tmp.MSW;
+
+    return
+ 
+</pre></div>
+</div>
+<p>Initialize au32_x array</p>
+<div class="code highlight-nasm"><div class="highlight"><pre>init_a:
+
+    mov #au32_x, W2
+    mov #0xA1F9, W0
+    mov #0x0982, W1
+    mov.d W0, [W2++]
+    mov #0x3204, W0
+    mov #0x88B2, W1
+    mov.d W0, [W2++]
+    mov #0x6B10, W0
+    mov #0xE3D9, W1
+    mov.d W0, [W2++]
+    mov #0xFB29, W0
+    mov #0xC385, W1
+    mov.d W0, [W2++]
+    return
+
+    .end
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../contents.html">Documentation overview</a><ul>
+  <li><a href="../textbook_examples.html">Textbook examples</a><ul>
+      <li>Previous: <a href="psv_upcase_24E33E.html" title="previous chapter">psv_upcase_24E33E.s - Initialize string from program memory (PIC24E/dsPIC33E)</a></li>
+      <li>Next: <a href="upcase.html" title="next chapter">upcase.s - Change a string to uppercase</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/chap06/swapU32.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Bryan A. Jones, Robert B. Reese, and J. W. Bruce.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="../_sources/chap06/swapU32.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

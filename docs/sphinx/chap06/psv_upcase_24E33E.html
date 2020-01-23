@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>psv_upcase_24E33E.s - Initialize string from program memory (PIC24E/dsPIC33E) &mdash; Microcontrollers: From Assembly Language to C Using the PIC24 family, second edition 6-May-2015 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/CodeChat.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '6-May-2015',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Microcontrollers: From Assembly Language to C Using the PIC24 family, second edition 6-May-2015 documentation" href="../contents.html" />
+    <link rel="up" title="Textbook examples" href="../textbook_examples.html" />
+    <link rel="next" title="swapU32.s - Swap two U32 values referenced by a pointer" href="swapU32.html" />
+    <link rel="prev" title="psv_upcase.s - Initialize string from program memory (PIC24H/dsPIC33F)" href="psv_upcase.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="psv-upcase-24e33e-s-initialize-string-from-program-memory-pic24e-dspic33e">
+<h1>psv_upcase_24E33E.s - Initialize string from program memory (PIC24E/dsPIC33E)<a class="headerlink" href="#psv-upcase-24e33e-s-initialize-string-from-program-memory-pic24e-dspic33e" title="Permalink to this headline">¶</a></h1>
+<p>illustrates string initialization from program memory
+using the PSV window for the PIC24E/dsPIC33E family</p>
+<div class="code highlight-nasm"><div class="highlight"><pre> 
+.include &quot;xc.inc&quot;
+
+.global __reset          ;The label for the first line of code.
+
+
+      .bss        ;unitialized data section
+;;These start at location 0x01000 because 0-0x0FFF is reserved for SFRs
+sz_1:   .space  6        ;Allocating space (in bytes) to variable
+sz_2:   .space 12        ;reserve space
+
+;; constant data to be moved to data memory
+.section .const,psv
+sz_1_const: .asciz  &quot;Hello&quot;
+sz_2_const: .asciz  &quot;UPPER/lower&quot;
+
+.text                             ;Start of Code section
+__reset:                          ; first instruction located at __reset label
+       mov #__SP_init, w15       ;Initalize the Stack Pointer
+       mov #__SPLIM_init,W0
+       mov W0, SPLIM             ;Initialize the stack limit register
+       call init_variables       ;initialize strings
+ ;__SP_init set by linker to be after allocated data
+       rcall main              ;call main()
+       reset                   ;start over
+main:
+    mov #sz_1,W0
+    rcall upcase
+    mov #sz_2,W0
+    rcall upcase
+done:
+    goto    done           ;infinite wait loop
+
+;*p passed in W0
+;W1,W2 used as temporaries
+upcase:
+  mov.b [W0],W1       ;W1=*p
+  cp.b W1,#0x00
+  bra Z, upcase_exit  ;exit if at end of string
+  mov #0x60,W2
+  cp.b W1,W2             ;compare *p and 0x60
+  bra LEU, upcase_end_if  ;skip if-body
+  mov #0x7B,W2
+  cp.b W1,W2          ;compare *p and 0x7B
+  bra GEU, upcase_end_if     ;skip if_body
+  mov #0x20,W2
+  sub.b W1,W2,[W0]    ; *p = *p-0x20
+upcase_end_if:
+  mov.b [W0],[W0++]   ;dummy move to do p++
+  bra upcase          ;loop back to top
+upcase_exit:
+  return
+
+
+
+init_variables:
+    movpag #psvpage(sz_1_const), DSRPAG   ;PIC24E/dsPIC33E family
+;copy source address in program memory to W0
+    mov  #psvoffset(sz_1_const),W0
+    mov  #sz_1,W1        ;destination address in data memory
+    rcall copy_cstring
+;copy source address in program memory to W0
+    movpag #psvpage(sz_2_const), DSRPAG  ;PIC24E/dsPIC33E family
+    mov  #psvoffset(sz_2_const),W0
+    mov  #sz_2,W1        ;destination address in data memory
+    rcall copy_cstring
+    return
+;;copy constant null-terminated string from program memory to data memory
+;;W0 points to program memory, W1 to data memory
+copy_cstring:
+    mov.b [W0],W2
+    cp.b W2,#0
+    bra Z, copy_cstring_exit  ;exit if null byte
+    mov.b [W0++],[W1++]
+    bra  copy_cstring
+copy_cstring_exit:
+    mov.b [W0++],[W1++]    ;copy null byte
+    return
+
+
+    .end
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../contents.html">Documentation overview</a><ul>
+  <li><a href="../textbook_examples.html">Textbook examples</a><ul>
+      <li>Previous: <a href="psv_upcase.html" title="previous chapter">psv_upcase.s - Initialize string from program memory (PIC24H/dsPIC33F)</a></li>
+      <li>Next: <a href="swapU32.html" title="next chapter">swapU32.s - Swap two U32 values referenced by a pointer</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/chap06/psv_upcase_24E33E.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Bryan A. Jones, Robert B. Reese, and J. W. Bruce.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="../_sources/chap06/psv_upcase_24E33E.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

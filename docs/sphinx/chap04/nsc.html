@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>nsc.s - Implement the Number Sequencing Computering in PIC24 assembly. &mdash; Microcontrollers: From Assembly Language to C Using the PIC24 family, second edition 6-May-2015 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/CodeChat.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '6-May-2015',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Microcontrollers: From Assembly Language to C Using the PIC24 family, second edition 6-May-2015 documentation" href="../contents.html" />
+    <link rel="up" title="Textbook examples" href="../textbook_examples.html" />
+    <link rel="next" title="countOnes.c - Counts the number of 1 bits in u16_v" href="../chap06/countOnes.html" />
+    <link rel="prev" title="mptst_byte.s - translation of 8-bit C aritmetic to assembly" href="../chap03/mptst_byte.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="nsc-s-implement-the-number-sequencing-computering-in-pic24-assembly">
+<h1>nsc.s - Implement the Number Sequencing Computering in PIC24 assembly.<a class="headerlink" href="#nsc-s-implement-the-number-sequencing-computering-in-pic24-assembly" title="Permalink to this headline">¶</a></h1>
+<div class="code highlight-nasm"><div class="highlight"><pre> 
+    .include &quot;xc.inc&quot;
+    .global __reset          ;The label for the first line of code.
+
+         .bss        ;unitialized data section
+
+loc:      .space 1    ;byte variable
+dout:     .space 1    ;byte variable
+
+         .text           ;Start of Code section
+__reset:                 ; first instruction located at __reset label
+    mov #__SP_init, W15  ;Initalize the Stack Pointer
+
+
+   ;bclr   loc, #0   ;uncomment for loc&lt;0&gt;=0
+   bset    loc, #0   ;uncomment for loc&lt;0&gt;=1
+loop_top:
+   btsc.b  loc,#0    ;skip next if loc&lt;0&gt; is 0
+   goto    loc_lsb_is_1
+   ;loc&lt;0&gt; is 0 if reach here
+   mov.b   #3,W0
+   mov.b   WREG,dout  ;dout = 3
+   mov.b   #2,W0
+   mov.b   WREG,dout  ;dout = 2
+   mov.b   #4,W0
+   mov.b   WREG,dout  ;dout = 4
+loc_lsb_is_1:
+   mov.b   #8,W0
+   mov.b   WREG,dout  ;dout = 8
+   mov.b   #5,W0
+   mov.b   WREG,dout  ;dout = 5
+   mov.b   #6,W0
+   mov.b   WREG,dout  ;dout = 6
+   mov.b   #1,W0
+   mov.b   WREG,dout  ;dout = 1
+   goto    loop_top  ;loop forever
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../contents.html">Documentation overview</a><ul>
+  <li><a href="../textbook_examples.html">Textbook examples</a><ul>
+      <li>Previous: <a href="../chap03/mptst_byte.html" title="previous chapter">mptst_byte.s - translation of 8-bit <em>C</em> aritmetic to assembly</a></li>
+      <li>Next: <a href="../chap06/countOnes.html" title="next chapter">countOnes.c - Counts the number of 1 bits in u16_v</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/chap04/nsc.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Bryan A. Jones, Robert B. Reese, and J. W. Bruce.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="../_sources/chap04/nsc.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

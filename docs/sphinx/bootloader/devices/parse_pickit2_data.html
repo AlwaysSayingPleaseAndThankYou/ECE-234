@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>parse_pickit2_data.pl &mdash; Microcontrollers: From Assembly Language to C Using the PIC24 family, second edition 6-May-2015 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/CodeChat.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '6-May-2015',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Microcontrollers: From Assembly Language to C Using the PIC24 family, second edition 6-May-2015 documentation" href="../../contents.html" />
+    <link rel="up" title="Utilities" href="../../utilities.html" />
+    <link rel="next" title="convert_gld.py" href="../pic24_dspic33_bootloader.X/lkr/convert_gld.html" />
+    <link rel="prev" title="get_devices.pl" href="get_devices.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="parse-pickit2-data-pl">
+<h1>parse_pickit2_data.pl<a class="headerlink" href="#parse-pickit2-data-pl" title="Permalink to this headline">¶</a></h1>
+<div class="code highlight-Perl"><div class="highlight"><pre> 
+<span class="c1">#parse dev id</span>
+
+
+<span class="nv">$fname</span> <span class="o">=</span> <span class="s">&quot;PK2DeviceFile.dat&quot;</span><span class="p">;</span>
+
+<span class="nb">open</span><span class="p">(</span><span class="n">INPUT</span><span class="p">,</span><span class="s">&quot;$fname&quot;</span><span class="p">)</span> <span class="o">||</span> <span class="nb">die</span> <span class="s">&quot;Cannot open $fname for reading\n&quot;</span><span class="p">;</span>
+<span class="nb">binmode</span> <span class="n">INPUT</span><span class="p">;</span>
+<span class="nv">$i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="nb">read</span><span class="p">(</span><span class="n">INPUT</span><span class="p">,</span><span class="nv">$c</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="p">{</span>
+<span class="nv">$buf</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span><span class="o">=</span> <span class="nb">unpack</span> <span class="s">&#39;C&#39;</span><span class="p">,</span> <span class="nv">$c</span><span class="p">;</span>
+<span class="nv">$i</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nv">$bufsize</span> <span class="o">=</span> <span class="nv">$i</span><span class="p">;</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Read $bufsize characters.\n&quot;</span><span class="p">);</span>
+
+<span class="nv">$offset</span> <span class="o">=</span> <span class="mh">0x0520</span><span class="p">;</span>  <span class="c1">#starting offset</span>
+</pre></div>
+</div>
+<p>now parse it.</p>
+<div class="code highlight-Perl"><div class="highlight"><pre><span class="k">while</span> <span class="p">(</span><span class="nv">$offset</span> <span class="o">&lt;</span> <span class="nv">$bufsize</span><span class="p">)</span> <span class="p">{</span>
+<span class="c1">#look for &quot;PIC&quot;</span>
+<span class="c1">#printf(&quot;%x\n&quot;,$buf[$offset]);</span>
+
+ <span class="k">if</span> <span class="p">(</span> <span class="p">((</span><span class="nv">$buf</span><span class="p">[</span><span class="nv">$offset</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0x50</span><span class="p">)</span> <span class="o">&amp;&amp;</span><span class="p">(</span><span class="nv">$buf</span><span class="p">[</span><span class="nv">$offset</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0x49</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nv">$buf</span><span class="p">[</span><span class="nv">$offset</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0x43</span><span class="p">))</span> <span class="o">||</span>
+      <span class="p">((</span><span class="nv">$buf</span><span class="p">[</span><span class="nv">$offset</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0x64</span><span class="p">)</span> <span class="o">&amp;&amp;</span><span class="p">(</span><span class="nv">$buf</span><span class="p">[</span><span class="nv">$offset</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0x73</span><span class="p">))</span>
+      <span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$len</span> <span class="o">=</span> <span class="nv">$buf</span><span class="p">[</span><span class="nv">$offset</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+        <span class="nv">$devname</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nv">$k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nv">$k</span><span class="o">&lt;</span><span class="nv">$len</span><span class="p">;</span><span class="nv">$k</span><span class="o">++</span><span class="p">){</span>
+         <span class="nv">$devname</span> <span class="o">=</span> <span class="nv">$devname</span> <span class="o">.</span> <span class="nb">chr</span><span class="p">(</span><span class="nv">$buf</span><span class="p">[</span><span class="nv">$offset</span><span class="o">+</span><span class="nv">$k</span><span class="p">]);</span>
+        <span class="p">}</span>
+        <span class="nv">$devid</span> <span class="o">=</span> <span class="nv">$buf</span><span class="p">[</span><span class="nv">$offset</span><span class="o">+</span><span class="nv">$len</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="nv">$buf</span><span class="p">[</span><span class="nv">$offset</span><span class="o">+</span><span class="nv">$len</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="mi">256</span><span class="p">;</span>
+
+        <span class="nb">printf</span><span class="p">(</span><span class="s">&quot;$devname  %04x\n&quot;</span><span class="p">,</span><span class="nv">$devid</span><span class="p">);</span>
+        <span class="nv">$offset</span> <span class="o">=</span> <span class="nv">$offset</span> <span class="o">+</span> <span class="nv">$len</span> <span class="o">+</span> <span class="mi">4</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+   <span class="nv">$offset</span> <span class="o">=</span> <span class="nv">$offset</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="nv">$buf</span><span class="p">[</span><span class="nv">$offset</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0x48</span><span class="p">)</span> <span class="o">&amp;&amp;</span><span class="p">(</span><span class="nv">$buf</span><span class="p">[</span><span class="nv">$offset</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0x56</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nv">$buf</span><span class="p">[</span><span class="nv">$offset</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0x50</span><span class="p">)</span>
+        <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nv">$buf</span><span class="p">[</span><span class="nv">$offset</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0x72</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nv">$buf</span><span class="p">[</span><span class="nv">$offset</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0x6f</span><span class="p">))</span> <span class="p">{</span>
+               <span class="k">last</span><span class="p">;</span>
+               <span class="p">}</span>
+
+
+
+<span class="p">}</span>
+
+<span class="nb">close</span><span class="p">(</span><span class="n">INPUT</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../contents.html">Documentation overview</a><ul>
+  <li><a href="../../utilities.html">Utilities</a><ul>
+      <li>Previous: <a href="get_devices.html" title="previous chapter">get_devices.pl</a></li>
+      <li>Next: <a href="../pic24_dspic33_bootloader.X/lkr/convert_gld.html" title="next chapter">convert_gld.py</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/bootloader/devices/parse_pickit2_data.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Bryan A. Jones, Robert B. Reese, and J. W. Bruce.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="../../_sources/bootloader/devices/parse_pickit2_data.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

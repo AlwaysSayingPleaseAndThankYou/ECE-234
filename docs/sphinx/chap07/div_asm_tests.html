@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>div_asm_tests.s &mdash; Microcontrollers: From Assembly Language to C Using the PIC24 family, second edition 6-May-2015 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/CodeChat.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '6-May-2015',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Microcontrollers: From Assembly Language to C Using the PIC24 family, second edition 6-May-2015 documentation" href="../contents.html" />
+    <link rel="up" title="Textbook examples" href="../textbook_examples.html" />
+    <link rel="next" title="float_bench.c - A simple program that benchmarks float vs u32 operations" href="float_bench.html" />
+    <link rel="prev" title="bytes2aschex_asm.s" href="byte2aschex_asm.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="div-asm-tests-s">
+<h1>div_asm_tests.s<a class="headerlink" href="#div-asm-tests-s" title="Permalink to this headline">¶</a></h1>
+<div class="code highlight-nasm"><div class="highlight"><pre> 
+.include &quot;p24Hxxxx.inc&quot;
+
+.global __reset          ;The label for the first line of code.
+
+
+         .data            ;unitialized data section
+
+         .bss
+;;These start at location 0x0800 because 0-0x07FF reserved for SFRs
+u16_k:   .space 2        ;Allocating space (in bytes) to variable.
+u8_j:    .space 1        ;Allocating space (in bytes) to variable.
+
+.text                          ;Start of Code section
+__reset:                       ; first instruction located at __reset label
+       mov #__SP_init, w15     ;Initalize the Stack Pointer
+       mov #__SPLIM_init,W0
+       mov W0, SPLIM           ;Initialize the stack limit register
+       rcall main              ;call main()
+       reset                   ;start over
+ ;__SP_init set by linker to be after allocated data
+
+main:
+      mov #0x9EF0,W2
+      mov #0x018D,W4
+      repeat #17
+      div.u W2,W4
+
+      mov #0x9A00,W2  ; 39424 unsigned, -26112 as signed
+      mov #0x6600,W3  ; 26112 unsigned, +26112 as unsigned
+      mov #105,W4     ; 105 unsigned, +105 signed
+      mov #0xFF97,W5  ; 65431 unsigned, -105 signed
+
+
+      repeat #17
+      div.u W2,W4     ;39424/105 =375=W0, r=49=W1
+      repeat #17
+      div.s W2,W4     ;-26112/+105 = -248=W0, r= -72=W1
+      repeat #17
+      div.s W3,W5     ;+26112/-105 = -248=W0, r= +72=W1
+      repeat #17
+      div.s W2,W5     ;-26112/-105 = +248=W0, r= -72=W1
+
+      mov #0x0,W6
+      mov #0x0001,W7  ;W7:W6 = 0x00010000= 65536 doubleword
+      mov #0x01,W8    ;W8=1
+      repeat #17
+      div.ud W6,W8    ;65536/1 is overflow as quotient &gt; 16-bits
+
+      mov  #0x8000,W2 ;-32768 signed
+      mov  #0xFFFF,W3 ; -1 signed
+      repeat #17
+      div.s W2,W3     ;-32768/-1 is overflow since +32768 &gt; 16-bits
+
+done:                     ;do not return
+       bra done
+
+
+
+
+
+
+    .end
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../contents.html">Documentation overview</a><ul>
+  <li><a href="../textbook_examples.html">Textbook examples</a><ul>
+      <li>Previous: <a href="byte2aschex_asm.html" title="previous chapter">bytes2aschex_asm.s</a></li>
+      <li>Next: <a href="float_bench.html" title="next chapter">float_bench.c - A simple program that benchmarks float vs u32 operations</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/chap07/div_asm_tests.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Bryan A. Jones, Robert B. Reese, and J. W. Bruce.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="../_sources/chap07/div_asm_tests.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

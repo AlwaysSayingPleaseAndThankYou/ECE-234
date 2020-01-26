@@ -64,11 +64,13 @@ u16_sum: .space 2
 .global __reset
 __reset:
 
+;int u16_lsp = 1164
 mov #1164, W0
 mov W0, u16_lsp
+; int u16_msp = 6370
 mov #6370, W1
 mov W1, u16_msp
-mov #0, W2
+; int U16_sum = u16_lsp + u16_msp
 add W0, W1, W2
 mov W2, u16_sum
 done:

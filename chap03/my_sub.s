@@ -58,15 +58,19 @@ u8_junk: .space 1
 __reset:
 
 ;first tWo digits
+; uint8 i = 70
 mov.B #70, W0
 mov.B WREG, u8_i
 ;second 2 digits
+; uint8 j = 63
 mov.B #63, W0
 mov.B WREG, u8_j
 ;third 2 digits
+; uint8 k = 64
 mov.B #64, W0
 mov.B WREG, u8_k
 ;set up sum variable
+; uint8 l = i + j
 mov.B u8_i, WREG
 mov.b W0, W1
 mov.b u8_j, WREG
@@ -75,6 +79,7 @@ add.B W1, W2, W3
 mov.b W3, W0
 mov.b WREG, u8_l
 ;set up difference variable
+uint8 m = l - k
 mov.b u8_k, WREG
 mov.b W0, W1
 mov.b u8_l, WREG

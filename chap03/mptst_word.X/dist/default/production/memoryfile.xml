@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <executable name="dist/default/debug/mptst_word.X.debug.elf">
+  <executable name="dist/default/production/mptst_word.X.production.elf">
     <memory name="data">
       <units>bytes</units>
       <length>16384</length>

@@ -75,9 +75,13 @@ add.B W1, W2, W3
 mov.b W3, W0
 mov.b WREG, u8_l
 ;set up difference variable
-mov.B #0, W4
-mov.B W4, u8_m
-sub.B W3, W2, W4 
+mov.b u8_k, WREG
+mov.b W0, W1
+mov.b u8_l, WREG
+mov.b W0, W2
+sub.b W2, W1, W0
+mov.b WREG, u8_m
+;mov.b W0, u8_m
 
 done:
-  goto     done    ;Place holder for last line of executed code
+  goto done    ;Place holder for last line of executed code

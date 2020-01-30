@@ -74,7 +74,7 @@ _main:                          ; _main is called after C startup code runs.
     mov.b #0x8f, W0
     mov.b WREG, u8_t
     mov.b #0x8f, W0
-    mov.b WREG, u8_c
+    mov.b WREG, u8_d
     ; YOUR INPUT CODE HERE
     ; Output
     ; YOUR OUTPUT CODE HERE

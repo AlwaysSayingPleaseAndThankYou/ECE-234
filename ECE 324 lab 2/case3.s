@@ -16,8 +16,13 @@ NUM_LOOPS = 100                 ; Number of loop iterations to run.
 ; is the correct order.
 ; *****************************************************************************
 u8_e:    .space 1
+u8_d:    .space 1
+u8_t:    .space 1
+u8_c:    .space 1
 u16_t:	 .space 2
 u16_a:	 .space 2
+u16_b:   .space 2
+u16_c:   .space 2
 ;..............................................................................
 ;Code Section in Program Memory
 ;..............................................................................
@@ -107,7 +112,8 @@ _main:                          ; _main is called after C startup code runs.
 
         ;      W?       W?
         ;if (u16_c & 0x0040)  {
-	and W2, #0x0040, W5
+	mov #0x0040, w5
+	and W2, w5, W5
 	bra NZ, if_1
 	bra Z, else_1
         ; Input
@@ -158,7 +164,8 @@ _main:                          ; _main is called after C startup code runs.
                 ; u16_a = (u16_a << 2) + 0xA500 + (uint16_t) u8_d;
                 SL W0, #2, W0
 		ZE W3, W3
-		ADD W0, #0xA500, W6
+		mov #0xA500, w5
+		ADD W0, w5, W6
 		ADD W6, W3, W6 
 		MOV W6, u16_a
                 ; Process

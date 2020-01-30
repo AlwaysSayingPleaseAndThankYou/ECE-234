@@ -16,6 +16,7 @@ NUM_LOOPS = 100                 ; Number of loop iterations to run.
 ; is the correct order.
 ; *****************************************************************************
 u8_e:    .space 1
+u8_d     .space 1
 u16_t:	 .space 2
 u16_a:	 .space 2
 ;..............................................................................
@@ -84,6 +85,11 @@ _main:                          ; _main is called after C startup code runs.
         ; instruction.
         ; *********************************************************************
         ; Your code goes here.
+	mov u16_a, W0
+	mov u16_b, W1
+	mov u16_c, W2
+	mov u8_d,  W3
+	mov u8_e,  W4
         call _check
 
         ; *********************************************************************

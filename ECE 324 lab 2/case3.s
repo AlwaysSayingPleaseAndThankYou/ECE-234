@@ -128,7 +128,7 @@ _main:                          ; _main is called after C startup code runs.
             ; Process
             ; Output
 
-
+	end_if_1:
 
         ; Code may go here...
         ; } else {

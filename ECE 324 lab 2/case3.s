@@ -43,8 +43,8 @@ _main:                          ; _main is called after C startup code runs.
     ; uint16_t u16_a = 0xE494;
     ; Input
     mov #0xE494, W1
-    mov W1, u16_t
-    mov #0xe494,W1 
+    ;mov W1, u16_t
+    ;mov #0xe494, W1 
     mov W1, u16_a
     ; Output
     ; YOUR OUTPUT CODE HERE
@@ -54,7 +54,7 @@ _main:                          ; _main is called after C startup code runs.
     ; Input
     mov #0x29a5, W1
     mov W1, u16_t
-    mov #0x29a6, W1
+    mov #0x29a5, W1
     mov W1, u16_b
     ; Output
     ; YOUR OUTPUT CODE HERE
@@ -99,12 +99,13 @@ _main:                          ; _main is called after C startup code runs.
         ; instruction.
         ; *********************************************************************
         ; Your code goes here.
-	mov u16_a, W0
+	
 	mov u16_b, W1
 	mov u16_c, W2
 	mov.b u8_d,  Wreg
 	mov.b w0, w3
 	mov u8_e,  W4
+	mov u16_a, W0
         call _check
 
         ; *********************************************************************

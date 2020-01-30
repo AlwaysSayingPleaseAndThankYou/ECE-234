@@ -99,6 +99,8 @@ _main:                          ; _main is called after C startup code runs.
 
         ;      W?       W?
         ;if (u16_c & 0x0040)  {
+	and W2, 0x0040, W5
+	bra NZ, W5
         ; Input
         ; Process
         ; Output

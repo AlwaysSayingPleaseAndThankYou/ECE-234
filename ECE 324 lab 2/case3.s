@@ -155,7 +155,7 @@ _main:                          ; _main is called after C startup code runs.
 		MOV W0, u16_a
                 ; Process
                 ; Output
-
+	    end_if_2:
             ; Code may go here...
             ; } else {
 	    else_2:
@@ -167,11 +167,11 @@ _main:                          ; _main is called after C startup code runs.
 		MOV W0, u16_a
                 ; Process
                 ; Output
-
+	    end_else_2: 
             ; Code may go here...
             ; }
             ; ...and may also go here.
-
+	end_else_1:
         ; Code may go here...
         ; }
         ; ...and may also go here.

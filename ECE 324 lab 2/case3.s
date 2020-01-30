@@ -170,7 +170,10 @@ _main:                          ; _main is called after C startup code runs.
 
         ; Replace this line with your register assigments.
         ;  u16_c = ~( (u16_c >> 1) - u16_a);
-        ; Input
+        LSR W2, W2
+	SUB W2, W0, W2
+	COM W2, W2
+	MOV W2, u16_c
         ; Process
         ; Output
         ; The two lines of C code below have already been implemented.

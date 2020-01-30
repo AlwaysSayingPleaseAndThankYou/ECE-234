@@ -37,31 +37,39 @@ _main:                          ; _main is called after C startup code runs.
     ;           W?       W?
     ; uint16_t u16_a = 0xE494;
     ; Input
-    mov 0xe494, u16_t
-    mov 0xe494, u16_a
+    mov #0xE494, W1
+    mov W1, u16_t
+    mov #0xe494,W1 
+    mov W1, u16_a
     ; Output
     ; YOUR OUTPUT CODE HERE
     
     ;           W?       W?
     ; uint16_t u16_b = 0x29A5;
     ; Input
-    mov 0x29a5, u16_t
-    mov 0x29a6, u16_b
+    mov #0x29a5, W1
+    mov W1, u16_t
+    mov #0x29a6, W1
+    mov W1, u16_b
     ; Output
     ; YOUR OUTPUT CODE HERE
 
     ;           W?       W?
     ; uint16_t u16_c = 0xA57D;
     ; Input
-    mov 0xA57D, u16_t
-    mov 0xA57D, u16_c
+    mov #0xA57D, W1
+    mov W1, u16_t
+    mov #0xA57D, W1
+    mov W1, u16_c
     ; Output
     ; YOUR OUTPUT CODE HERE
 
     ;          W?      W?
     ; uint8_t u8_d = 0x8F;
-    mov.b 0x8f, u8_t
-    mov.b 0x8f, u8_c
+    mov.b #0x8f, W0
+    mov.b WREG, u8_t
+    mov.b #0x8f, W0
+    mov.b WREG, u8_c
     ; YOUR INPUT CODE HERE
     ; Output
     ; YOUR OUTPUT CODE HERE
@@ -99,7 +107,7 @@ _main:                          ; _main is called after C startup code runs.
 
         ;      W?       W?
         ;if (u16_c & 0x0040)  {
-	and W2, 0x0040, W5
+	and W2, #0x0040, W5
 	bra NZ, if_1
 	bra Z, else_1
         ; Input

@@ -102,7 +102,8 @@ _main:                          ; _main is called after C startup code runs.
 	mov u16_a, W0
 	mov u16_b, W1
 	mov u16_c, W2
-	mov u8_d,  W3
+	mov.b u8_d,  Wreg
+	mov.b w0, w3
 	mov u8_e,  W4
         call _check
 

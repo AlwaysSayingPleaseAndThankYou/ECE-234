@@ -54,13 +54,15 @@ _main:                          ; _main is called after C startup code runs.
     ;           W?       W?
     ; uint16_t u16_c = 0xA57D;
     ; Input
-    ; YOUR INPUT CODE HERE
+    mov 0xA57D, uint16_t
+    mov 0xA57D, u16_c
     ; Output
     ; YOUR OUTPUT CODE HERE
 
     ;          W?      W?
     ; uint8_t u8_d = 0x8F;
-    ; Input
+    mov.b 0x8f, uint8_t
+    mov.b 0x8f, u8_c
     ; YOUR INPUT CODE HERE
     ; Output
     ; YOUR OUTPUT CODE HERE

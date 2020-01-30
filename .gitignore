@@ -2,3 +2,6 @@
 *.jpg
 *.png
 /ECE 324 lab 2/case3.X/dist/
+*.o
+*.xml
+*.properties

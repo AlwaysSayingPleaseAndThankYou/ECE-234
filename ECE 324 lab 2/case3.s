@@ -16,7 +16,8 @@ NUM_LOOPS = 100                 ; Number of loop iterations to run.
 ; is the correct order.
 ; *****************************************************************************
 u8_e:    .space 1
-
+u16_t:	 .space 2
+u16_a:	 .space 2
 ;..............................................................................
 ;Code Section in Program Memory
 ;..............................................................................
@@ -36,14 +37,16 @@ _main:                          ; _main is called after C startup code runs.
     ;           W?       W?
     ; uint16_t u16_a = 0xE494;
     ; Input
-    ; YOUR INPUT CODE HERE
+    mov 0xe494, u16_t
+    mov 0xe494, u16_a
     ; Output
     ; YOUR OUTPUT CODE HERE
     
     ;           W?       W?
     ; uint16_t u16_b = 0x29A5;
     ; Input
-    ; YOUR INPUT CODE HERE
+    mov 0x29a5, u16_t
+    mov 0x29a6, u16_b
     ; Output
     ; YOUR OUTPUT CODE HERE
 

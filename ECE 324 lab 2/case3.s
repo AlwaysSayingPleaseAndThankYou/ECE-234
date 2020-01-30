@@ -138,7 +138,11 @@ _main:                          ; _main is called after C startup code runs.
             ; Replace this line with your register assigments.
 	    
             ; if (u16_a <= u16_b) {
-            ; Input
+	    mov u16_b, W0
+	    cp u16_a
+	    bra ge, if_2
+	    bra lt, else_2
+	    if_2:
             ; Process
             ; Output
 
@@ -154,6 +158,7 @@ _main:                          ; _main is called after C startup code runs.
 
             ; Code may go here...
             ; } else {
+	    else_2:
             ; ...and may also go here.
 
                 ; Replace this line with your register assigments.

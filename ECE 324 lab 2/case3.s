@@ -53,14 +53,14 @@ _main:                          ; _main is called after C startup code runs.
     ;           W?       W?
     ; uint16_t u16_c = 0xA57D;
     ; Input
-    mov 0xA57D, uint16_t
+    mov 0xA57D, u16_t
     mov 0xA57D, u16_c
     ; Output
     ; YOUR OUTPUT CODE HERE
 
     ;          W?      W?
     ; uint8_t u8_d = 0x8F;
-    mov.b 0x8f, uint8_t
+    mov.b 0x8f, u8_t
     mov.b 0x8f, u8_c
     ; YOUR INPUT CODE HERE
     ; Output
@@ -105,19 +105,23 @@ _main:                          ; _main is called after C startup code runs.
 
             ; Replace this line with your register assigments.
             ; u8_d = ~u8_d - u8_e;
-            ; Input
+            com.b W3, W3
+	    sub.b W3, W4, W3
+	    mov.b W3,u8_d
             ; Process
             ; Output
 
             ; Replace this line with your register assigments.
             ; u16_a = u16_b | u16_c;
-            ; Input
+            IOR W1, W2, W0
+	    mov W0, u16_a
             ; Process
             ; Output
 
             ; Replace this line with your register assigments.
             ; u16_b = u16_b - u16_c;
-            ; Input
+            sub W1, W2, W1
+	    mov W1, u16_b
             ; Process
             ; Output
 

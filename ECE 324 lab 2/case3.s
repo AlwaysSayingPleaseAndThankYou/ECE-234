@@ -141,7 +141,11 @@ _main:                          ; _main is called after C startup code runs.
 
                 ; Replace this line with your register assigments.
                 ; u16_a = (u16_a << 2) + 0xA500 + (uint16_t) u8_d;
-                ; Input
+                SL W0, #2, W0
+		ZE W3, W3
+		ADD W0, #0xA500, W0
+		ADD W0, W3, W0 
+		MOV W0, u16_a
                 ; Process
                 ; Output
 
@@ -151,7 +155,8 @@ _main:                          ; _main is called after C startup code runs.
 
                 ; Replace this line with your register assigments.
                 ; u16_a = u16_a - u16_b;
-                ; Input
+                SUB W0, W1, W0
+		MOV W0, u16_a
                 ; Process
                 ; Output
 

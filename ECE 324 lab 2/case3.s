@@ -100,11 +100,12 @@ _main:                          ; _main is called after C startup code runs.
         ;      W?       W?
         ;if (u16_c & 0x0040)  {
 	and W2, 0x0040, W5
-	bra NZ, W5
+	bra NZ, if_1
+	bra Z, else_1
         ; Input
         ; Process
         ; Output
-
+	if_1:
             ; Replace this line with your register assigments.
             ; u8_d = ~u8_d - u8_e;
             com.b W3, W3
@@ -131,9 +132,11 @@ _main:                          ; _main is called after C startup code runs.
 
         ; Code may go here...
         ; } else {
+	else_1:
         ; ...and may also go here.
 
             ; Replace this line with your register assigments.
+	    
             ; if (u16_a <= u16_b) {
             ; Input
             ; Process

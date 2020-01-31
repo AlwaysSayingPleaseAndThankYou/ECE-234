@@ -114,8 +114,8 @@ _main:                          ; _main is called after C startup code runs.
 
         ;      W?       W?
         ;if (u16_c & 0x0040)  {
-	mov #0x0040, w5
-	and W2, w5, W5
+	mov #0x0040, W5
+	and W2, W5, W5
 	bra NZ, if_1
 	bra Z, else_1
         ; Input
@@ -156,8 +156,9 @@ _main:                          ; _main is called after C startup code runs.
             ; if (u16_a <= u16_b) {
 	    mov u16_b, W0
 	    cp u16_a
-	    bra ge, if_2
-	    bra lt, else_2
+	    bra GTU, if_2
+	    bra LTU, else_2
+	    ; GUS: its evaluating to else_2 even though u16_a is bigger? 
 	    if_2:
             ; Process
             ; Output

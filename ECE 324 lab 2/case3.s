@@ -158,7 +158,6 @@ _main:                          ; _main is called after C startup code runs.
 	    cp u16_a
 	    bra GTU, if_2
 	    bra LTU, else_2
-	    ; GUS: its evaluating to else_2 even though u16_a is bigger? 
 	    if_2:
             ; Process
             ; Output

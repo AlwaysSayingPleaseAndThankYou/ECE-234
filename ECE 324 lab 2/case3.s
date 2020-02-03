@@ -170,6 +170,9 @@ _main:                          ; _main is called after C startup code runs.
 		ADD W0, w5, W6
 		ADD W6, W3, W6 
 		MOV W6, u16_a
+		
+		;GUS It just Went out of end_if_2 and into else_2?!!?!?
+		goto end_else_1
                 ; Process
                 ; Output
 	    end_if_2:
@@ -195,8 +198,11 @@ _main:                          ; _main is called after C startup code runs.
 
         ; Replace this line with your register assigments.
         ;  u16_c = ~( (u16_c >> 1) - u16_a);
+	
+	
         LSR W2, W2
-	SUB W2, W0, W2
+	mov u16_a, W5
+	SUB W2, W5, W2
 	COM W2, W2
 	MOV W2, u16_c
         ; Process

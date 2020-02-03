@@ -14,9 +14,9 @@ void check(uint16_t u16_a1, uint16_t u16_b1, uint16_t u16_c1, uint8_t u8_d1, uin
     printf("\n\n\nTest started.\n");
 
 // Print out expected vs. acutal values
-  printf(" a:%04x,  b:%04x,  c: %04x,  d:%02x,  e:%02x is correct; saw\n",
+  printf("CORRECT a:%04x,  b:%04x,  c: %04x,  d:%02x,  e:%02x \n",
          u16_a,     u16_b,    u16_c,     u8_d,   u8_e);
-  printf("a1:%04x, b1:%04x, c1: %04x, d1:%02x, e1:%02x ",
+  printf("OUTPUT  a1:%04x, b1:%04x, c1: %04x, d1:%02x, e1:%02x \n",
          u16_a1,    u16_b1,  u16_c1,     u8_d1,  u8_e1);
 
   // Print out a pass/fail indication

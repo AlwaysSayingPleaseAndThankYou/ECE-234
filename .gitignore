@@ -6,3 +6,4 @@
 *.xml
 *.properties
 */debug
+*.d

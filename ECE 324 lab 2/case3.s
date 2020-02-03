@@ -141,6 +141,7 @@ _main:                          ; _main is called after C startup code runs.
             ; u16_b = u16_b - u16_c;
             sub W1, W2, W1
 	    mov W1, u16_b
+	    goto end_else_1
             ; Process
             ; Output
 

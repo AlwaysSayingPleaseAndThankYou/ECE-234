@@ -84,8 +84,6 @@ _main:                          ; _main is called after C startup code runs.
 
     ; do {
     do_top:
-        mov.b u8_e, WREG
-        mov.b W0, W4
         ; *********************************************************************
         ; TO DO: To print out the variables in your code, set:
         ; W0 = u16_a
@@ -100,14 +98,19 @@ _main:                          ; _main is called after C startup code runs.
         ; *********************************************************************
         ; Your code goes here.
 	
-	;GUS: I commented this all out because I think this is all in the Wrong place 
-	; - We're just replacing our code everytime this Way
-	;mov u16_b, W1
-	;mov u16_c, W2
-	;mov.b u8_d,  Wreg
-	;mov.b w0, w3
-	;mov u8_e,  W4
-	;mov u16_a, W0
+	
+	;w1 = u16_a
+	mov u16_b, W1
+	;w2 = u16_b
+	mov u16_c, W2
+	;w3 = u8_d
+	mov.b u8_d,  WREG
+	mov.b W0, W3
+	;w4 = u8_e
+	mov.b u8_e, wreg
+	mov.b w0, w4
+	;w0 = u16_a
+	mov u16_a, W0
         call _check
 
         ; *********************************************************************
@@ -167,14 +170,18 @@ _main:                          ; _main is called after C startup code runs.
 
                 ; Replace this line with your register assigments.
                 ; u16_a = (u16_a << 2) + 0xA500 + (uint16_t) u8_d;
+		; u16_a << 2
                 SL W0, #2, W0
+		;w3 is empty here? 
+		;(uint16_t) u8_d
 		ZE W3, W3
+		; (u16_a <<2) + 0xA500
 		mov #0xA500, w5
 		ADD W0, w5, W6
+		; above + u8_d
 		ADD W6, W3, W6 
 		MOV W6, u16_a
 		
-		;GUS It just Went out of end_if_2 and into else_2?!!?!?
 		goto end_else_1
                 ; Process
                 ; Output

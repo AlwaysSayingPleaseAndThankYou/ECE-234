@@ -93,9 +93,9 @@ _main:                          ; _main is called after C startup code runs.
         ; Your code goes here.
 	
 	
-	;w1 = u16_a
+	;w1 = u16_b
 	mov u16_b, W1
-	;w2 = u16_b
+	;w2 = u16_c
 	mov u16_c, W2
 	;w3 = u8_d
 	mov.b u8_d,  WREG

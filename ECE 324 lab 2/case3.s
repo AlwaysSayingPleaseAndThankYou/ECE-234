@@ -183,6 +183,10 @@ _main:                          ; _main is called after C startup code runs.
                 ; Replace this line with your register assigments.
                 ; u16_a = (u16_a << 2) + 0xA500 + (uint16_t) u8_d;
 		; u16_a << 2
+		MOV.b u8_d, WREG
+		MOV.b W0, W3
+		MOV u16_a, W0
+		
                 SL W0, #2, W0
 		;w3 is empty here? 
 		;(uint16_t) u8_d

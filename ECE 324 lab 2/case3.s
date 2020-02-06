@@ -1,4 +1,4 @@
-NUM_LOOPS = 100                 ; Number of loop iterations to run.
+NUM_LOOPS = 10                ; Number of loop iterations to run.
                                 ; For debug, choose a small number (1 to 10)
                                 ; then increase it when your code works.
 
@@ -12,14 +12,14 @@ NUM_LOOPS = 100                 ; Number of loop iterations to run.
 ; For example,
 ; u32_b: .space 4
 ; u16_c: .space 2
-; u8_a:  .space 1
+; u8_a:  .space 1 
 ; is the correct order.
 ; *****************************************************************************
 u8_e:    .space 1
 u8_d:    .space 1
-u8_t:    .space 1
-u8_c:    .space 1
-u16_t:	 .space 2
+;u8_t:    .space 1 This are unnecisary
+;u8_c:    .space 1 This are unnecisary
+;u16_t:	 .space 2 this doesnt exist
 u16_a:	 .space 2
 u16_b:   .space 2
 u16_c:   .space 2
@@ -42,9 +42,9 @@ _main:                          ; _main is called after C startup code runs.
     ;           W?       W?
     ; uint16_t u16_a = 0xE494;
     ; Input
-    mov #0xE494, W1
     ;mov W1, u16_t
     ;mov #0xe494, W1 
+    mov #0xE494, W1
     mov W1, u16_a
     ; Output
     ; YOUR OUTPUT CODE HERE
@@ -52,7 +52,7 @@ _main:                          ; _main is called after C startup code runs.
     ;           W?       W?
     ; uint16_t u16_b = 0x29A5;
     ; Input
-    mov #0x29a5, W1
+    mov #0x29A5, W1
     mov W1, u16_b
     ; Output
     ; YOUR OUTPUT CODE HERE
@@ -74,8 +74,10 @@ _main:                          ; _main is called after C startup code runs.
     ; YOUR OUTPUT CODE HERE
     
     ; u8_e = 0;
-    clr.b u8_e
-
+    ;clr.b u8_e
+    ;changed the clear into a mov
+    mov.b #0x00, W0
+    mov.b WREG, u8_e
     ; do {
     do_top:
         ; *********************************************************************
@@ -101,7 +103,7 @@ _main:                          ; _main is called after C startup code runs.
 	mov.b u8_d,  WREG
 	mov.b W0, W3
 	;w4 = u8_e
-	;!! u8_e isn't initialized here
+	;!! u8_e isn't initialized here ;??
 	mov.b u8_e, wreg
 	mov.b w0, w4
 	;w0 = u16_a
@@ -173,7 +175,7 @@ _main:                          ; _main is called after C startup code runs.
 	    mov u16_b, W0
 	    cp u16_a
 	    bra GTU, if_2
-	    bra LTU, else_2
+	    bra LEU, else_2
 	    if_2:
             ; Process
             ; Output

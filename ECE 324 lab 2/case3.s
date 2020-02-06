@@ -1,4 +1,4 @@
-NUM_LOOPS = 10                ; Number of loop iterations to run.
+NUM_LOOPS = 100                ; Number of loop iterations to run.
                                 ; For debug, choose a small number (1 to 10)
                                 ; then increase it when your code works.
 
@@ -172,10 +172,10 @@ _main:                          ; _main is called after C startup code runs.
             ; Replace this line with your register assigments.
 	    
             ; if (u16_a <= u16_b) {
-	    mov u16_b, W0
-	    cp u16_a
-	    bra GTU, if_2
-	    bra LEU, else_2
+	    mov u16_a, W0
+	    cp u16_b
+	    bra GEU, if_2
+	    bra LTU, else_2
 	    if_2:
             ; Process
             ; Output

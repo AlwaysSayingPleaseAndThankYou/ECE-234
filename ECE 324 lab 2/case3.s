@@ -107,6 +107,21 @@ _main:                          ; _main is called after C startup code runs.
 	;w0 = u16_a
 	mov u16_a, W0
         call _check
+	
+	;redoing the delcaration because _check fucks em up? 
+	;w1 = u16_b
+	mov u16_b, W1
+	;w2 = u16_c
+	mov u16_c, W2
+	;w3 = u8_d
+	mov.b u8_d,  WREG
+	mov.b W0, W3
+	;w4 = u8_e
+	;!! u8_e isn't initialized here
+	mov.b u8_e, wreg
+	mov.b w0, w4
+	;w0 = u16_a
+	mov u16_a, W0
 
         ; *********************************************************************
         ; TO DO: Implement the code fragment below.

@@ -17,7 +17,11 @@ NUM_LOOPS = 100
 ; u8_a:  .space 1
 ; is the correct order.
 ; *****************************************************************************
-u8_e:    .space 1
+i32_a: .space 4
+i32_b: .space 4
+i32_c: .space 4
+i16_d: .space 2
+u8_e:  .space 1
 
 ;..............................................................................
 ;Code Section in Program Memory
@@ -36,7 +40,25 @@ _main:                          ; _main is called after C startup code runs.
     ;; int32_t i32_b = 0x348AC297;
     ;; int32_t i32_c = 0xA55A93CD;
     ;; int16_t i16_d = 0xA4F5;
+    
+    MOV #0x3894, WO
+    MOV W0, i32_a
+    MOV #0xB3E8, W0
+    MOV W0, i32_a + 2
+    
+    MOV #0xC297, WO
+    MOV W0, i32_b
+    MOV #0x348A, W0
+    MOV W0, i32_b + 2
+    
+    MOV #0x93CD, WO
+    MOV W0, i32_c
+    MOV #0xA55A, W0
+    MOV W0, i32_c + 2
 
+    MOV #0xA4F5, WO
+    MOV W0, i16_d
+    
     ; u8_e = 0;
     clr.b u8_e
 
@@ -58,6 +80,19 @@ _main:                          ; _main is called after C startup code runs.
         ; instruction.
         ; *********************************************************************
         ; Your code goes here.
+	
+	MOV i32_a, W0
+	MOV i32_a + 2, W1
+	MOV i32_b, W2
+	MOV i32_b + 2, W3
+	MOV i32_c, W4
+	MOV i32_c + 2, W5
+	MOV i16_d, W6
+	MOV.b u8_e, WREG
+	MOV.b W0, W7
+	
+
+	
         call _check
 
         ; *********************************************************************

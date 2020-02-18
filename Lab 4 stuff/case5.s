@@ -65,8 +65,8 @@ _main:                          ; _main is called after C startup code runs.
     ; do {
     do_top:
 
-        mov.b u8_e, WREG
-        mov.b W0, W7
+    mov.b u8_e, WREG
+    mov.b W0, W7
         ; *********************************************************************
         ; TO DO: To print out the variables in your code, set:
         ; W1:W0 = i32_a
@@ -81,19 +81,19 @@ _main:                          ; _main is called after C startup code runs.
         ; *********************************************************************
         ; Your code goes here.
 	
-	MOV i32_a, W0
-	MOV i32_a + 2, W1
-	MOV i32_b, W2
-	MOV i32_b + 2, W3
-	MOV i32_c, W4
-	MOV i32_c + 2, W5
-	MOV i16_d, W6
-	MOV.b u8_e, WREG
-	MOV.b W0, W7
+    MOV i32_a, W0
+    MOV i32_a + 2, W1
+    MOV i32_b, W2
+    MOV i32_b + 2, W3
+    MOV i32_c, W4
+    MOV i32_c + 2, W5
+    MOV i16_d, W6
+    MOV.b u8_e, WREG
+    MOV.b W0, W7
 	
 
 	
-        call _check
+    call _check
 
         ; *********************************************************************
         ; The code fragment to implement:
@@ -124,13 +124,34 @@ _main:                          ; _main is called after C startup code runs.
         ; Input
         ; Process
         ; Output
-
+    mov i32_c, W1
+    mov i32_c + 2, W2
+    and W1, #0x0000,W1
+    bra NZ, end_if_1
+    cp W2, #0x0800
+    bra NZ, end_if_1
+   
+	
+	
             ; Replace this line with your register assigments.
             ; if (i32_b < i32_a) {
             ; Input
             ; Process
             ; Output
-
+    if_body_1:
+    MOV i32_b, W1
+    MOV i32_b + 2, W2
+    MOV i32_a, W3
+    MOV i32_a + 2, W4
+    
+    cp W2, W4
+    bra GEU, end_if_2
+    cpb W1, W3
+    bra GEU, end_if_2
+    
+    if_body_2:
+    
+    
                 ; Replace this line with your register assigments.
                 ; i32_b = i32_b + i32_a;
                 ; Input
@@ -148,8 +169,11 @@ _main:                          ; _main is called after C startup code runs.
                 ; Output
            ; Code may go here...
            ; }
-           ; ...and may also go here.
-
+           ; ...and may also go here.	
+	   
+    end_if_2:
+    end_if_1:
+    
       ; Code may go here...
       ; } else {
       ; ...and may also go here.

@@ -21,6 +21,7 @@ i32_a: .space 4
 i32_b: .space 4
 i32_c: .space 4
 i16_d: .space 2
+i16_d2: .space 2
 u8_e:  .space 1
 
 ;..............................................................................
@@ -178,6 +179,31 @@ _main:                          ; _main is called after C startup code runs.
                 ; Input
                 ; Process
                 ; Output
+    MOV i32_a, W1
+    MOV i32_a + 2, W2
+    MOV i32_b, W3
+    MOV i32_b + 2, W4
+    MOV i16_d, W5
+    
+    MOV #0x0000, WO
+    MOV W0, i16_d2
+    
+    MOV i16_d32, W6
+    
+    LSR W2, W2
+    RRC W1, W1
+    
+    LSR W2, W2
+    RRC W1, W1
+    
+    ADD W3, W1, W1
+    ADDC W4, W2, W2
+    
+    ADD W1, W5, W1
+    ADDC W2, W6, W2
+    
+    MOV W1, i32_a
+    MOV W2, i32_a + 2
            ; Code may go here...
            ; }
            ; ...and may also go here.	

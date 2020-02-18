@@ -264,7 +264,21 @@ _main:                          ; _main is called after C startup code runs.
         ; Input
         ; Process
         ; Output
-
+    
+    MOV i32_b, W1
+    MOV i32_b + 2, W2
+    MOV i32_c, W3
+    MOV i32_c + 2, W4
+    
+    SL W3, W3
+    RLC W4, W4
+    ADD W3, W1, W3
+    ADDC W4, W2, W4
+    COM W3, W3
+    COM W4, W4
+    MOV W3, i32_c
+    MOV w4, i32_c + 2
+	
 
         ; The two lines of C code below have already been implemented.
         ; Do not modify them.

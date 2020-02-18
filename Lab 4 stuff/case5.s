@@ -214,29 +214,49 @@ _main:                          ; _main is called after C startup code runs.
       ; Code may go here...
       ; } else {
       ; ...and may also go here.
-
+    else_body_2:
+    MOV i32_a, W1
+    MOV i32_a + 2, W2
+    MOV i32_b, W3
+    MOV i32_b + 2, W4
+    MOV i16_d, W5
+    
+    
           ; Replace this line with your register assigments.
           ; i32_b = i32_a - i32_b;
           ; Input
           ; Process
           ; Output
-
+    SUB W1, W3, W3
+    SUBB W2, W4, W4
+    MOV W3, i32_b
+    MOV W4, i32_b + 2
+    
+    
+    
           ; Replace this line with your register assigments.
           ;   i32_a = i32_a + 0xA2588080 ;
           ; Input
           ; Process
           ; Output
-
+    ADD W1, 0x8080
+    ADDC W2, 0xA258
+    MOV W1, i32_a
+    MOV W2, i32_a + 2
+    
           ; Replace this line with your register assigments.
           ;  i16_d = ~( (i16_d ^ 0x00A5) + 128) ; ; //128 is in decimal!
           ; Input
           ; Process
           ; Output
-
-
-
+    XOR W5, #0x00A5, W5
+    ADD W5, #128
+    COM W5, W5
+    MOV W5, u16_d
+    
         ; Code may go here...
         ; }
+    end_else_2:
         ; ...and may also go here.
 
         ; Replace this line with your register assigments.

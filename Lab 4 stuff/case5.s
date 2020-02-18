@@ -144,22 +144,33 @@ _main:                          ; _main is called after C startup code runs.
     MOV i32_a, W3
     MOV i32_a + 2, W4
     
-    cp W2, W4
+    cp W1, W3
+    ; bra GEU, end_if_2 ;; It doesn't branch because the cp is just to check if there is a borrow.
+    cpb W2, W4
     bra GEU, end_if_2
-    cpb W1, W3
-    bra GEU, end_if_2
-    
-    if_body_2:
-    
     
                 ; Replace this line with your register assigments.
                 ; i32_b = i32_b + i32_a;
                 ; Input
                 ; Process
                 ; Output
-
+    if_body_2:
+    MOV i32_b, W1
+    MOV i32_b + 2, W2
+    MOV i32_a, W3
+    MOV i32_a + 2, W4
+    
+    ADD W1, W3, W1
+    ADD W2, W4, W2
+    MOV W1, i32_b
+    MOV W2, i32_b + 2
+    
            ; Code may go here...
            ; } else {
+	   
+    end_if_2:
+    else_body_1:
+    
            ; ...and may also go here.
 
                 ; Replace this line with your register assigments.
@@ -171,7 +182,7 @@ _main:                          ; _main is called after C startup code runs.
            ; }
            ; ...and may also go here.	
 	   
-    end_if_2:
+    end_else_1:
     end_if_1:
     
       ; Code may go here...

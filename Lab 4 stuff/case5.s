@@ -21,6 +21,7 @@ i32_a: .space 4
 i32_b: .space 4
 i32_c: .space 4
 i16_d: .space 2
+i16_d2: .space 2
 u8_e:  .space 1
 
 ;..............................................................................
@@ -65,8 +66,8 @@ _main:                          ; _main is called after C startup code runs.
     ; do {
     do_top:
 
-        mov.b u8_e, WREG
-        mov.b W0, W7
+    mov.b u8_e, WREG
+    mov.b W0, W7
         ; *********************************************************************
         ; TO DO: To print out the variables in your code, set:
         ; W1:W0 = i32_a
@@ -81,19 +82,19 @@ _main:                          ; _main is called after C startup code runs.
         ; *********************************************************************
         ; Your code goes here.
 	
-	MOV i32_a, W0
-	MOV i32_a + 2, W1
-	MOV i32_b, W2
-	MOV i32_b + 2, W3
-	MOV i32_c, W4
-	MOV i32_c + 2, W5
-	MOV i16_d, W6
-	MOV.b u8_e, WREG
-	MOV.b W0, W7
+    MOV i32_a, W0
+    MOV i32_a + 2, W1
+    MOV i32_b, W2
+    MOV i32_b + 2, W3
+    MOV i32_c, W4
+    MOV i32_c + 2, W5
+    MOV i16_d, W6
+    MOV.b u8_e, WREG
+    MOV.b W0, W7
 	
 
 	
-        call _check
+    call _check
 
         ; *********************************************************************
         ; The code fragment to implement:
@@ -124,21 +125,53 @@ _main:                          ; _main is called after C startup code runs.
         ; Input
         ; Process
         ; Output
-
+    mov i32_c, W1
+    mov i32_c + 2, W2
+    and W1, #0x0000,W1
+    bra NZ, end_if_1
+    cp W2, #0x0800
+    bra NZ, end_if_1
+   
+	
+	
             ; Replace this line with your register assigments.
             ; if (i32_b < i32_a) {
             ; Input
             ; Process
             ; Output
-
+    if_body_1:
+    MOV i32_b, W1
+    MOV i32_b + 2, W2
+    MOV i32_a, W3
+    MOV i32_a + 2, W4
+    
+    cp W1, W3
+    ; bra GEU, end_if_2 ;; It doesn't branch because the cp is just to check if there is a borrow.
+    cpb W2, W4
+    bra GEU, end_if_2
+    
                 ; Replace this line with your register assigments.
                 ; i32_b = i32_b + i32_a;
                 ; Input
                 ; Process
                 ; Output
-
+    if_body_2:
+    MOV i32_b, W1
+    MOV i32_b + 2, W2
+    MOV i32_a, W3
+    MOV i32_a + 2, W4
+    
+    ADD W1, W3, W1
+    ADD W2, W4, W2
+    MOV W1, i32_b
+    MOV W2, i32_b + 2
+    
            ; Code may go here...
            ; } else {
+	   
+    end_if_2:
+    else_body_1:
+    
            ; ...and may also go here.
 
                 ; Replace this line with your register assigments.
@@ -146,36 +179,84 @@ _main:                          ; _main is called after C startup code runs.
                 ; Input
                 ; Process
                 ; Output
+    MOV i32_a, W1
+    MOV i32_a + 2, W2
+    MOV i32_b, W3
+    MOV i32_b + 2, W4
+    MOV i16_d, W5
+    
+    MOV #0x0000, WO
+    MOV W0, i16_d2
+    
+    MOV i16_d32, W6
+    
+    LSR W2, W2
+    RRC W1, W1
+    
+    LSR W2, W2
+    RRC W1, W1
+    
+    ADD W3, W1, W1
+    ADDC W4, W2, W2
+    
+    ADD W1, W5, W1
+    ADDC W2, W6, W2
+    
+    MOV W1, i32_a
+    MOV W2, i32_a + 2
            ; Code may go here...
            ; }
-           ; ...and may also go here.
-
+           ; ...and may also go here.	
+	   
+    end_else_1:
+    end_if_1:
+    
       ; Code may go here...
       ; } else {
       ; ...and may also go here.
-
+    else_body_2:
+    MOV i32_a, W1
+    MOV i32_a + 2, W2
+    MOV i32_b, W3
+    MOV i32_b + 2, W4
+    MOV i16_d, W5
+    
+    
           ; Replace this line with your register assigments.
           ; i32_b = i32_a - i32_b;
           ; Input
           ; Process
           ; Output
-
+    SUB W1, W3, W3
+    SUBB W2, W4, W4
+    MOV W3, i32_b
+    MOV W4, i32_b + 2
+    
+    
+    
           ; Replace this line with your register assigments.
           ;   i32_a = i32_a + 0xA2588080 ;
           ; Input
           ; Process
           ; Output
-
+    ADD W1, 0x8080
+    ADDC W2, 0xA258
+    MOV W1, i32_a
+    MOV W2, i32_a + 2
+    
           ; Replace this line with your register assigments.
           ;  i16_d = ~( (i16_d ^ 0x00A5) + 128) ; ; //128 is in decimal!
           ; Input
           ; Process
           ; Output
-
-
-
+    XOR W5, #0x00A5, W5
+    ADD W5, #128
+    COM W5, W5
+    MOV W5, u16_d
+    
         ; Code may go here...
         ; }
+    end_else_2:
         ; ...and may also go here.
 
         ; Replace this line with your register assigments.
@@ -183,7 +264,21 @@ _main:                          ; _main is called after C startup code runs.
         ; Input
         ; Process
         ; Output
-
+    
+    MOV i32_b, W1
+    MOV i32_b + 2, W2
+    MOV i32_c, W3
+    MOV i32_c + 2, W4
+    
+    SL W3, W3
+    RLC W4, W4
+    ADD W3, W1, W3
+    ADDC W4, W2, W4
+    COM W3, W3
+    COM W4, W4
+    MOV W3, i32_c
+    MOV w4, i32_c + 2
+	
 
         ; The two lines of C code below have already been implemented.
         ; Do not modify them.

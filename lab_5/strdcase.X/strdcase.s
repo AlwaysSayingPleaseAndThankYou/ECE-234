@@ -57,7 +57,7 @@ main:
     ;While start
     bra Z, dostr_While_end
     ;store value incase need unchagned
-    mov.b [WREG], u8_c
+    mov.b [W0], u8_c
     ;if start
     mov [W0], W3
     mov #0x2F, W2

@@ -21,7 +21,13 @@ sz_1_const: .asciz "Upper/lower."
 sz_2_const: .asciz "mIXeD CaSe.."
  
  dostr: 
+    mov [W0], W1
+    cp.b W1
+    bra Z, dostr_While_end
     
+    bra dostr
+    dostr_While_end:
+    return
  main: 
     
 

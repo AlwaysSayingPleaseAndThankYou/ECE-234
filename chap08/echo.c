@@ -43,8 +43,8 @@ int main(void) {
   // Echo character + 1.
   while (1) {
     u8_c = inChar();  //get character
-    //u8_c = u8_c + 2;
-    u8_c++;           //increment the character
+    u8_c = u8_c + 2;	
+    //u8_c++;           //increment the character
     outChar(u8_c);    //echo the character
   } // end while (1)
 }

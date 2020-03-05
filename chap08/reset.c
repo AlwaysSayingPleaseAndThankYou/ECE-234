@@ -78,7 +78,7 @@ uint8_t printMenuGetChoice() {
   outString("'5' doze = divide by 2\n");
   outString("'6' doze = divide by 128\n");
   outString("'7' execute reset instruction\n");
-  outString("'8' doze = dividie by 4\n");
+  outString("'8' doze = divide by 4\n");
   outString("Choice: ");
   u8_c = inChar();
   outChar(u8_c);      //echo character

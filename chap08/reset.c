@@ -78,6 +78,7 @@ uint8_t printMenuGetChoice() {
   outString("'5' doze = divide by 2\n");
   outString("'6' doze = divide by 128\n");
   outString("'7' execute reset instruction\n");
+  outString("'8' doze = dividie by 4\n");
   outString("Choice: ");
   u8_c = inChar();
   outChar(u8_c);      //echo character
@@ -132,16 +133,19 @@ int main(void) {
         outString("after WDT enable, sleep.\n"); //executed on wakeup
         break;
       case '5':
-        _DOZE = 1; //chose divide by 2
+        _DOZE = 1; //chose divide by 2 == 2**1
         _DOZEN = 1; //enable doze mode
         break;
       case '6':
-        _DOZE = 7; //chose divide by 128
+        _DOZE = 7; //chose divide by 128 == 2**7
         _DOZEN = 1; //enable doze mode
         break;
       case '7':
         asm("reset"); //reset myself
         break;
+      case '8':
+        _DOZE = 2; //chose divide by 4 == 2*#2 
+        _DOZEN = 1; //enable doze mode
 
       default:
         break;  //ignore

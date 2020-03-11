@@ -130,10 +130,13 @@ void update_state(void) {
       break;
       //case 2 - 
     case STATE_PRESSED2:
-      if (PB_RELEASED()) { 
+      if (PB_RELEASED() & SW) {
         e_state = STATE_RELEASED3_BLINK;
         // Zero the toggled count when entering the blink state.
         u16_led_toggles = 0;
+      }
+      if (PB_RELEASED() && !SW){
+          e_state = STATE_RELEASED1;
       }
       break;
 

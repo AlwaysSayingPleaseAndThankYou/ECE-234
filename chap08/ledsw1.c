@@ -75,6 +75,10 @@ typedef enum  {
   STATE_PRESSED2,
   STATE_RELEASED3_BLINK,
   STATE_PRESSED3,
+  STATE_PRESSED4,
+  STATE_RELEASED4,
+  STATE_PRESSED5,
+  STATE_RELEASED5
 } state_t;
 
 const char* apsz_state_names[] = {
@@ -140,7 +144,7 @@ void update_state(void) {
       }
       break;
 
-    case STATE_RELEASED3_BLINK:
+    case STATE_PRESSED3:
       // Toggle the LED.
       LED1 = !LED1;
       u16_led_toggles++;
@@ -151,18 +155,53 @@ void update_state(void) {
       if (u16_led_toggles >= 10) {
         e_state = STATE_RELEASED1;
       }
-      if (PB_PRESSED()) {
-        e_state = STATE_PRESSED3;
-      }
-      break;
-
-    case STATE_PRESSED3:
-      LED1 = 1;
       if (PB_RELEASED()) {
-        e_state = STATE_RELEASED1;
+        e_state = STATE_RELEASED3_BLINK;
       }
       break;
 
+    case STATE_RELEASED3_BLINK3:
+      LED1 = 0;
+      if (PB_PRESSED()) {
+        e_state = STATE_PRESSED4;
+      }
+      break;
+      case STATE_PRESSED4:
+          LED1 = !LED1;
+          u16_led_toggles++;
+          printf("toggles = %d\n", u16_led_toggles);
+          // Delay to make LED blinks visible
+          DELAY_MS(250);
+
+          if (u16_led_toggles >= 10) {
+              e_state = STATE_RELEASED1;
+          }
+          if (PB_RELEASED()) {
+              e_state = STATE_RELEASED4;
+          }
+          break;
+      case STATE_RELEASED4:
+          LED1 = !LED1;
+          u16_led_toggles++;
+          printf("toggles = %d\n", u16_led_toggles);
+          // Delay to make LED blinks visible
+          DELAY_MS(124);
+
+          if (u16_led_toggles >= 10) {
+              e_state = STATE_RELEASED1;
+          }
+          if (PB_PRESSED()) {
+              e_state = STATE_PRESSED5;
+          }
+          break;
+      case STATE_PRESSED5:
+          if(PB_RELEASED()){
+              e_state = STATE_RELEASED5;
+          }
+          break;
+      case STATE_RELEASED5:
+          e_state = STATE_RELEASED1;
+          break;
     default:
       ASSERT(0);
   }

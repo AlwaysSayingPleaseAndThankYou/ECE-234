@@ -108,13 +108,14 @@ void update_state(void) {
   static uint16_t u16_led_toggles;
 
   switch (e_state) {
+  	//case 0 - LED is always on awaiting input
     case STATE_RELEASED1:
-      LED1 = 0;
+      LED1 = 1;
       if (PB_PRESSED()) {
         e_state = STATE_PRESSED1;
       }
       break;
-
+      //case 1 - LED goes off - goto 2
     case STATE_PRESSED1:
       if (PB_RELEASED()) {
         e_state = STATE_RELEASED2;
@@ -122,20 +123,17 @@ void update_state(void) {
       break;
 
     case STATE_RELEASED2:
-      LED1 = 1;
+      LED1 = 0;
       if (PB_PRESSED()) {
         e_state = STATE_PRESSED2;
       }
       break;
-
+      //case 2 - 
     case STATE_PRESSED2:
-      if (PB_RELEASED() && SW) {
+      if (PB_RELEASED()) { 
         e_state = STATE_RELEASED3_BLINK;
         // Zero the toggled count when entering the blink state.
         u16_led_toggles = 0;
-      }
-      if (PB_RELEASED() && !SW) {
-        e_state = STATE_RELEASED1;
       }
       break;
 
